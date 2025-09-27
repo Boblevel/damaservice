@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAMAS SERVICE - Services Numériques</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables et styles de base */
+        :root {
+            --primary-color: #8B0000; /* Rouge foncé */
+            --secondary-color: #FFD700; /* Jaune */
+            --accent-color: #9400D3; /* Violet */
+            --light-color: #FFFFFF; /* Blanc */
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --text-color: #333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--light-color) 50%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animation 3D pour l'arrière-plan dynamique */
+        .dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 70%);
+            animation: floatParticle 15s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .pulse {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(148,0,211,0.2) 0%, transparent 70%);
+            animation: pulseEffect 8s infinite ease-in-out;
+        }
+
+        @keyframes pulseEffect {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.2;
+            }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header styles */
+        header {
+            background-color: rgba(139, 0, 0, 0.9);
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--box-shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            border: 2px solid var(--light-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-img::before {
+            content: "DS";
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .logo-img::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 1.8rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .logo-sub {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            letter-spacing: 2px;
+        }
+
+        .search-cart {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+        }
+
+        .search-bar input {
+            padding: 8px 12px;
+            border: none;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            width: 250px;
+        }
+
+        .search-bar button {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--light-color);
+            transition: var(--transition);
+        }
+
+        .cart-icon:hover {
+            color: var(--secondary-color);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light-color);
+        }
+
+        /* Navigation */
+        nav {
+            background-color: rgba(148, 0, 211, 0.9);
+            padding: 10px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+        }
+
+        .nav-menu li {
+            margin: 0 15px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+        }
+
+        .nav-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light-color);
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: var(--primary-color);
+            z-index: 2000;
+            transition: var(--transition);
+            padding: 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .close-menu {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light-color);
+        }
+
+        .mobile-menu-items {
+            list-style: none;
+        }
+
+        .mobile-menu-items li {
+            margin-bottom: 15px;
+        }
+
+        .mobile-menu-items a {
+            color: var(--light-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .mobile-menu-items a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(139, 0, 0, 0.7), rgba(148, 0, 211, 0.7)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn:hover {
+            background-color: #e6c200;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+            color: white;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--accent-color));
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            transform: perspective(1000px) rotateY(0deg);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .service-card:hover {
+            transform: perspective(1000px) rotateY(5deg) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            font-size: 2.5rem;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            animation: iconShine 3s infinite;
+        }
+
+        @keyframes iconShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .service-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .service-content {
+            padding: 20px;
+        }
+
+        .service-content h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .service-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .service-stars {
+            color: var(--warning-color);
+            margin-right: 10px;
+        }
+
+        .service-review-count {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .service-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .service-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-add-cart {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            border: 1px solid #ddd;
+        }
+
+        .btn-add-cart:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Floating cart icon */
+        .floating-cart {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+
+        .floating-cart:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-cart .cart-count {
+            top: -5px;
+            right: -5px;
+            width: 25px;
+            height: 25px;
+            font-size: 0.9rem;
+        }
+
+        /* Dashboard Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            animation: modalAppear 0.3s ease;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .cart-items {
+            margin: 20px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        /* Info Pages */
+        .info-page {
+            display: none;
+            padding: 40px 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: var(--box-shadow);
+        }
+
+        .info-page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .info-page h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        /* Reviews Section */
+        .reviews {
+            padding: 80px 0;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .review-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .review-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 15px;
+            overflow: hidden;
+            border: 3px solid var(--secondary-color);
+        }
+
+        .review-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .review-info {
+            flex: 1;
+        }
+
+        .review-name {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .review-time {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .review-rating {
+            color: var(--warning-color);
+            margin-top: 5px;
+        }
+
+        .add-review {
+            margin-top: 40px;
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .add-review h3 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .review-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* WhatsApp Group Section */
+        .whatsapp-group {
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            text-align: center;
+        }
+
+        .whatsapp-group h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .whatsapp-group p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 1.1rem;
+        }
+
+        .group-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .benefit-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+        }
+
+        .benefit-item i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-section p, .footer-section a {
+            color: #bbb;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .search-bar {
+                order: 3;
+                width: 100%;
+                margin-top: 15px;
+            }
+
+            .search-bar input {
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .service-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .logo-text {
+                flex-direction: column;
+            }
+
+            .logo-main {
+                font-size: 1.5rem;
+            }
+
+            .logo-sub {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Arrière-plan dynamique -->
+    <div class="dynamic-bg" id="dynamic-bg"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <div class="logo-img"></div>
+                        <div class="logo-text">
+                            <div class="logo-main">DAMAS SERVICE</div>
+                            <div class="logo-sub">SOLUTIONS NUMÉRIQUES</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="search-cart">
+                    <div class="search-bar">
+                        <input type="text" id="search-input" placeholder="Rechercher un produit...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="cart-icon" id="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                    <div class="menu-toggle" id="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="#accueil">Accueil</a></li>
+                <li class="dropdown">
+                    <a href="#tableau-de-bord">Tableau de bord <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="#" id="dashboard-link">Tableau de bord</a>
+                        <a href="#" data-page="support">Support</a>
+                        <a href="#" data-page="aide">Aide</a>
+                        <a href="#" data-page="a-propos">À propos de nous</a>
+                    </div>
+                </li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="overlay" id="overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <h3>Menu</h3>
+            <div class="close-menu" id="close-menu">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <ul class="mobile-menu-items">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#" id="mobile-dashboard-link">Tableau de bord</a></li>
+            <li><a href="#" data-page="support">Support</a></li>
+            <li><a href="#" data-page="aide">Aide</a></li>
+            <li><a href="#" data-page="a-propos">À propos de nous</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="accueil">
+        <div class="container">
+            <div class="hero-content">
+                <h1>DAMAS SERVICE</h1>
+                <p>Votre partenaire numérique pour la liberté sur le web, la monétisation des réseaux sociaux et bien plus encore.</p>
+                <a href="#services" class="btn">Découvrir nos services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">Nos Services</h2>
+            <div class="services-grid" id="services-container">
+                <!-- Les services seront générés dynamiquement par JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Pages -->
+    <div class="container">
+        <div id="support" class="info-page">
+            <h2>Support Technique</h2>
+            <p>Notre équipe de support est disponible pour vous aider avec tous vos problèmes techniques. Nous offrons un support rapide et efficace pour garantir votre satisfaction.</p>
+            <p><strong>Heures d'ouverture :</strong> Lundi - Vendredi, 8h00 - 18h00</p>
+            <p><strong>Contact :</strong> +226 51 37 79 44 | dindanedamas@gmail.com</p>
+            <p>Pour une assistance immédiate, contactez-nous via WhatsApp : <a href="https://wa.me/message/QBYI5DDPLNSSA1" class="btn btn-whatsapp" style="display: inline-block; padding: 8px 15px; margin-top: 10px;">Support WhatsApp</a></p>
+        </div>
+
+        <div id="aide" class="info-page">
+            <h2>Aide & FAQ</h2>
+            <p>Retrouvez ici les réponses aux questions les plus fréquemment posées.</p>
+            
+            <h3>Comment fonctionne le service VPN ?</h3>
+            <p>Notre service VPN vous permet de naviguer anonymement sur internet, d'accéder à des contenus géo-restreints et de sécuriser votre connexion. Après achat, vous recevrez les instructions d'installation et de configuration.</p>
+            
+            <h3>Comment monétiser mon compte TikTok ?</h3>
+            <p>Nous vous accompagnons pas à pas dans le processus de monétisation de votre compte TikTok, de l'optimisation de votre contenu à la gestion des partenariats publicitaires.</p>
+            
+            <h3>Les bots WhatsApp sont-ils légaux ?</h3>
+            <p>Oui, nos bots WhatsApp sont conformes aux conditions d'utilisation de la plateforme et sont conçus pour automatiser des réponses pré-approuvées, pas pour spammer.</p>
+        </div>
+
+        <div id="a-propos" class="info-page">
+            <h2>À propos de nous</h2>
+            <p>DAMAS SERVICE est une entreprise spécialisée dans les services numériques, fondée en 2020 par Dindané Damas. Notre mission est de démocratiser l'accès aux outils numériques performants pour les particuliers et les professionnels en Afrique.</p>
+            
+            <h3>Notre vision</h3>
+            <p>Être le leader des solutions numériques en Afrique de l'Ouest, en offrant des services innovants, accessibles et adaptés aux besoins locaux.</p>
+            
+            <h3>Nos valeurs</h3>
+            <ul>
+                <li><strong>Innovation :</strong> Nous restons à la pointe de la technologie pour vous offrir les meilleurs services.</li>
+                <li><strong>Accessibilité :</strong> Nos tarifs sont adaptés au pouvoir d'achat local.</li>
+                <li><strong>Support :</strong> Nous accompagnons nos clients à chaque étape.</li>
+                <li><strong>Fiabilité :</strong> La satisfaction client est notre priorité absolue.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- WhatsApp Group Section -->
+    <section class="whatsapp-group">
+        <div class="container">
+            <h2>Rejoignez notre communauté WhatsApp</h2>
+            <p>Échangez avec d'autres passionnés, recevez des astuces exclusives et soyez informé des dernières offres en temps réel.</p>
+            
+            <div class="group-benefits">
+                <div class="benefit-item">
+                    <i class="fas fa-users"></i>
+                    <h3>Communauté active</h3>
+                    <p>Plus de 500 membres échangent quotidiennement</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Astuces exclusives</h3>
+                    <p>Des conseils que vous ne trouverez nulle part ailleurs</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-gift"></i>
+                    <h3>Offres spéciales</h3>
+                    <p>Bénéficiez de promotions réservées aux membres</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-headset"></i>
+                    <h3>Support prioritaire</h3>
+                    <p>Obtenez de l'aide rapidement</p>
+                </div>
+            </div>
+            
+            <a href="https://chat.whatsapp.com/GzE7hsdvkWDDfldtv0O2mP" class="btn btn-whatsapp" style="font-size: 1.2rem; padding: 15px 30px;">
+                <i class="fab fa-whatsapp"></i> Rejoindre le groupe maintenant
+            </a>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews">
+        <div class="container">
+            <h2 class="section-title">Avis Clients</h2>
+            <div class="reviews-grid" id="reviews-container">
+                <!-- Les avis seront générés dynamiquement par JavaScript -->
+            </div>
+            
+            <div class="add-review">
+                <h3>Laissez votre avis</h3>
+                <form class="review-form" id="review-form">
+                    <div class="form-group">
+                        <label for="review-name">Votre nom</label>
+                        <input type="text" id="review-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="review-rating">Note</label>
+                        <select id="review-rating" required>
+                            <option value="5">★★★★★ Excellent</option>
+                            <option value="4">★★★★☆ Très bien</option>
+                            <option value="3">★★★☆☆ Bien</option>
+                            <option value="2">★★☆☆☆ Moyen</option>
+                            <option value="1">★☆☆☆☆ Médiocre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="review-text">Votre avis</label>
+                        <textarea id="review-text" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Publier mon avis</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>DAMAS SERVICE</h3>
+                    <p>Votre partenaire numérique de confiance pour tous vos besoins en ligne.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/message/QBYI5DDPLNSSA1"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-phone"></i> +226 51 37 79 44</p>
+                    <p><i class="fas fa-envelope"></i> dindanedamas@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Services Populaires</h3>
+                    <a href="#services">VPN Ultra-performant</a>
+                    <a href="#services">Monétisation TikTok</a>
+                    <a href="#services">Bots WhatsApp</a>
+                    <a href="#services">Création de compte PayPal</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2021 - 2026 DAMAS SERVICE. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Cart -->
+    <div class="floating-cart" id="floating-cart">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">0</span>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div class="modal" id="dashboard-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Tableau de Bord</h2>
+            <div class="cart-items" id="dashboard-cart">
+                <!-- Les articles du panier seront affichés ici -->
+            </div>
+            <div class="cart-total" id="dashboard-total">Total: 0 F</div>
+            <a href="#" class="btn btn-whatsapp" id="dashboard-order-btn">Commander via WhatsApp</a>
+        </div>
+    </div>
+
+    <script>
+        // Données des services avec logos personnalisés
+        const services = [
+            {
+                id: 1,
+                name: "CONNEXION VPN ultra-performant",
+                logo: "VPN",
+                logoColor: "#4A90E2",
+                logoBg: "linear-gradient(135deg, #4A90E2, #7B68EE)",
+                icon: "fas fa-shield-alt",
+                rating: 4.8,
+                reviewCount: 127,
+                options: [
+                    { name: "1 semaine", price: 500 },
+                    { name: "1 mois", price: 1500 },
+                    { name: "Formation complète", price: 4000 }
+                ]
+            },
+            {
+                id: 2,
+                name: "Monétisation TikTok",
+                logo: "TT",
+                logoColor: "#000000",
+                logoBg: "linear-gradient(135deg, #000000, #FF2D55)",
+                icon: "fas fa-video",
+                rating: 4.6,
+                reviewCount: 89,
+                price: "Sur devis - À partir de 10000 F"
+            },
+            {
+                id: 3,
+                name: "Bots WhatsApp Business",
+                logo: "WA",
+                logoColor: "#25D366",
+                logoBg: "linear-gradient(135deg, #25D366, #128C7E)",
+                icon: "fab fa-whatsapp",
+                rating: 4.7,
+                reviewCount: 203,
+                price: "À partir de 5000 F"
+            },
+            {
+                id: 4,
+                name: "Création de compte PayPal vérifié",
+                logo: "PP",
+                logoColor: "#003087",
+                logoBg: "linear-gradient(135deg, #003087, #009CDE)",
+                icon: "fab fa-paypal",
+                rating: 4.9,
+                reviewCount: 156,
+                price: "3000 F"
+            },
+            {
+                id: 5,
+                name: "Formation Crypto & Trading",
+                logo: "CT",
+                logoColor: "#F7931A",
+                logoBg: "linear-gradient(135deg, #F7931A, #FF9900)",
+                icon: "fas fa-chart-line",
+                rating: 4.5,
+                reviewCount: 78,
+                price: "Formation complète à partir de 10000 F"
+            },
+            {
+                id: 6,
+                name: "Canal TV illimité",
+                logo: "TV",
+                logoColor: "#E50914",
+                logoBg: "linear-gradient(135deg, #E50914, #B81D24)",
+                icon: "fas fa-tv",
+                rating: 4.8,
+                reviewCount: 342,
+                price: "4500 F/mois"
+            }
+        ];
+
+        // Données des avis clients
+        const reviews = [
+            {
+                name: "Akissi Kouamé",
+                avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+                time: "Il y a 2 heures",
+                rating: 5,
+                text: "Excellent service VPN! J'ai pu accéder à tous les sites que je voulais sans problème. La vitesse est impressionnante. Je recommande vivement!"
+            },
+            {
+                name: "Yao Konan",
+                avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                time: "Il y a 1 semaine",
+                rating: 4,
+                text: "Grâce à Damas Service, j'ai pu monétiser mon compte TikTok. Maintenant je gagne de l'argent avec mes vidéos! Le support est très réactif."
+            },
+            {
+                name: "Aminata Touré",
+                avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+                time: "Il y a 3 jours",
+                rating: 5,
+                text: "Le bot WhatsApp a révolutionné mon business. Je ne rate plus aucun message client même quand je dors! Configuration rapide et efficace."
+            },
+            {
+                name: "Kouadio Traoré",
+                avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+                time: "Il y a 2 semaines",
+                rating: 5,
+                text: "J'ai enfin un compte PayPal fonctionnel pour recevoir mes paiements internationaux. Service rapide et professionnel! Merci Damas Service."
+            }
+        ];
+
+        // Panier
+        let cart = [];
+
+        // Initialisation de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Créer l'arrière-plan dynamique
+            createDynamicBackground();
+            
+            // Afficher les services
+            renderServices();
+            
+            // Afficher les avis
+            renderReviews();
+            
+            // Gestion du panier
+            updateCartCount();
+            
+            // Événements
+            document.getElementById('cart-icon').addEventListener('click', openDashboard);
+            document.getElementById('floating-cart').addEventListener('click', openDashboard);
+            document.getElementById('dashboard-link').addEventListener('click', openDashboard);
+            document.getElementById('mobile-dashboard-link').addEventListener('click', openDashboard);
+            document.querySelector('.close-modal').addEventListener('click', closeDashboard);
+            document.getElementById('dashboard-order-btn').addEventListener('click', orderViaWhatsApp);
+            
+            // Menu mobile
+            document.getElementById('menu-toggle').addEventListener('click', openMobileMenu);
+            document.getElementById('close-menu').addEventListener('click', closeMobileMenu);
+            document.getElementById('overlay').addEventListener('click', closeMobileMenu);
+            
+            // Pages d'information
+            document.querySelectorAll('[data-page]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showInfoPage(pageId);
+                    closeMobileMenu();
+                });
+            });
+            
+            // Recherche
+            document.querySelector('.search-bar button').addEventListener('click', searchProducts);
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchProducts();
+                }
+            });
+            
+            // Formulaire d'avis
+            document.getElementById('review-form').addEventListener('submit', addReview);
+        });
+
+        // Créer l'arrière-plan dynamique
+        function createDynamicBackground() {
+            const dynamicBg = document.getElementById('dynamic-bg');
+            
+            // Créer des particules flottantes
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Taille aléatoire
+                const size = Math.random() * 100 + 50;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Position aléatoire
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Animation aléatoire
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                dynamicBg.appendChild(particle);
+            }
+            
+            // Créer des effets de pulsation
+            for (let i = 0; i < 5; i++) {
+                const pulse = document.createElement('div');
+                pulse.classList.add('pulse');
+                
+                // Position aléatoire
+                pulse.style.left = `${Math.random() * 100}%`;
+                pulse.style.top = `${Math.random() * 100}%`;
+                
+                // Animation aléatoire
+                pulse.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                pulse.style.animationDelay = `${Math.random() * 3}s`;
+                
+                dynamicBg.appendChild(pulse);
+            }
+        }
+
+        // Afficher les services
+        function renderServices() {
+            const container = document.getElementById('services-container');
+            container.innerHTML = '';
+            
+            services.forEach(service => {
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                
+                let priceHtml = '';
+                if (service.options) {
+                    priceHtml = service.options.map(option => 
+                        `<div class="service-price">${option.name} → ${option.price} F</div>`
+                    ).join('');
+                } else {
+                    priceHtml = `<div class="service-price">${service.price}</div>`;
+                }
+                
+                // Générer les étoiles
+                const fullStars = Math.floor(service.rating);
+                const halfStar = service.rating % 1 >= 0.5;
+                const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                
+                let starsHtml = '';
+                for (let i = 0; i < fullStars; i++) {
+                    starsHtml += '<i class="fas fa-star"></i>';
+                }
+                if (halfStar) {
+                    starsHtml += '<i class="fas fa-star-half-alt"></i>';
+                }
+                for (let i = 0; i < emptyStars; i++) {
+                    starsHtml += '<i class="far fa-star"></i>';
+                }
+                
+                card.innerHTML = `
+                    <div class="service-icon">
+                        <div class="service-logo" style="background: ${service.logoBg}; color: ${service.logoColor}">
+                            ${service.logo}
+                        </div>
+                        <i class="${service.icon}"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>${service.name}</h3>
+                        <div class="service-rating">
+                            <div class="service-stars">${starsHtml}</div>
+                            <div class="service-review-count">${service.rating} (${service.reviewCount} avis)</div>
+                        </div>
+                        ${priceHtml}
+                        <div class="service-actions">
+                            <button class="btn btn-add-cart" data-id="${service.id}">
+                                <i class="fas fa-cart-plus"></i> Ajouter au panier
+                            </button>
+                            <button class="btn btn-whatsapp" data-id="${service.id}">
+                                <i class="fab fa-whatsapp"></i> Commander
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            // Ajouter les événements aux boutons
+            document.querySelectorAll('.btn-add-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const serviceId = parseInt(this.getAttribute('data-id'));
+                    addToCart(serviceId);
+                });
+            });
+            
+            document.querySelectorAll('.btn-whatsapp').forEach(button => {
+                button.addEventListener('click', function() {
+                    const serviceId = parseInt(this.getAttribute('data-id'));
+                    orderServiceViaWhatsApp(serviceId);
+                });
+            });
+        }
+
+        // Afficher les avis
+        function renderReviews() {
+            const container = document.getElementById('reviews-container');
+            container.innerHTML = '';
+            
+            reviews.forEach(review => {
+                const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card';
+                reviewCard.innerHTML = `
+                    <div class="review-header">
+                        <div class="review-avatar">
+                            <img src="${review.avatar}" alt="${review.name}">
+                        </div>
+                        <div class="review-info">
+                            <div class="review-name">${review.name}</div>
+                            <div class="review-time">${review.time}</div>
+                            <div class="review-rating">${stars}</div>
+                        </div>
+                    </div>
+                    <p>${review.text}</p>
+                `;
+                
+                container.appendChild(reviewCard);
+            });
+        }
+
+        // Ajouter un avis
+        function addReview(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('review-name').value;
+            const rating = parseInt(document.getElementById('review-rating').value);
+            const text = document.getElementById('review-text').value;
+            
+            if (!name || !text) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            // Générer une photo aléatoire
+            const gender = Math.random() > 0.5 ? 'women' : 'men';
+            const randomId = Math.floor(Math.random() * 70) + 1;
+            const avatar = `https://randomuser.me/api/portraits/${gender}/${randomId}.jpg`;
+            
+            const newReview = {
+                name: name,
+                avatar: avatar,
+                time: "À l'instant",
+                rating: rating,
+                text: text
+            };
+            
+            reviews.unshift(newReview);
+            renderReviews();
+            
+            // Réinitialiser le formulaire
+            document.getElementById('review-form').reset();
+            
+            alert('Merci pour votre avis! Il a été publié avec succès.');
+        }
+
+        // Ajouter au panier
+        function addToCart(serviceId) {
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+            
+            // Si le service a des options, on ajoute la première option par défaut
+            if (service.options) {
+                cart.push({
+                    id: service.id,
+                    name: service.name,
+                    option: service.options[0].name,
+                    price: service.options[0].price
+                });
+            } else {
+                // Extraire le prix numérique si c'est une chaîne
+                let price = 0;
+                if (typeof service.price === 'string') {
+                    const priceMatch = service.price.match(/\d+/);
+                    price = priceMatch ? parseInt(priceMatch[0]) : 0;
+                } else {
+                    price = service.price;
+                }
+                
+                cart.push({
+                    id: service.id,
+                    name: service.name,
+                    price: price
+                });
+            }
+            
+            updateCartCount();
+            
+            // Animation du panier
+            const cartIcons = document.querySelectorAll('.cart-icon, .floating-cart');
+            cartIcons.forEach(icon => {
+                icon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    icon.style.transform = 'scale(1)';
+                }, 300);
+            });
+        }
+
+        // Mettre à jour le compteur du panier
+        function updateCartCount() {
+            const countElements = document.querySelectorAll('.cart-count');
+            countElements.forEach(element => {
+                element.textContent = cart.length;
+            });
+        }
+
+        // Ouvrir le tableau de bord
+        function openDashboard() {
+            const modal = document.getElementById('dashboard-modal');
+            const cartContainer = document.getElementById('dashboard-cart');
+            const totalElement = document.getElementById('dashboard-total');
+            
+            // Afficher les articles du panier
+            cartContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<p>Votre panier est vide.</p>';
+                totalElement.textContent = 'Total: 0 F';
+            } else {
+                let total = 0;
+                
+                cart.forEach((item, index) => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    
+                    let price = item.price;
+                    total += price;
+                    
+                    itemElement.innerHTML = `
+                        <div>
+                            <strong>${item.name}</strong>
+                            ${item.option ? `<br><small>${item.option}</small>` : ''}
+                        </div>
+                        <div>
+                            <span>${price} F</span>
+                            <button class="btn-remove" data-index="${index}" style="background: none; border: none; color: var(--accent-color); cursor: pointer; margin-left: 10px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    cartContainer.appendChild(itemElement);
+                });
+                
+                totalElement.textContent = `Total: ${total} F`;
+                
+                // Ajouter les événements de suppression
+                document.querySelectorAll('.btn-remove').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        cart.splice(index, 1);
+                        openDashboard(); // Rafraîchir l'affichage
+                        updateCartCount();
+                    });
+                });
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        // Fermer le tableau de bord
+        function closeDashboard() {
+            document.getElementById('dashboard-modal').style.display = 'none';
+        }
+
+        // Commander via WhatsApp (panier complet)
+        function orderViaWhatsApp() {
+            if (cart.length === 0) {
+                alert('Votre panier est vide.');
+                return;
+            }
+            
+            let message = "Bonjour, je souhaite commander les services suivants sur DAMAS SERVICE:%0A%0A";
+            let total = 0;
+            
+            cart.forEach(item => {
+                let price = item.price;
+                total += price;
+                message += `- ${item.name}${item.option ? ` (${item.option})` : ''}: ${price} F%0A`;
+            });
+            
+            message += `%0ATotal: ${total} F%0A%0AMerci de me contacter pour finaliser la commande.`;
+            
+            window.open(`https://wa.me/message/QBYI5DDPLNSSA1?text=${message}`, '_blank');
+        }
+
+        // Commander un service directement via WhatsApp
+        function orderServiceViaWhatsApp(serviceId) {
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+            
+            let message = `Bonjour, je souhaite commander le service "${service.name}" sur DAMAS SERVICE.%0A%0A`;
+            
+            if (service.options) {
+                message += "Options disponibles:%0A";
+                service.options.forEach(option => {
+                    message += `- ${option.name}: ${option.price} F%0A`;
+                });
+            } else {
+                message += `Prix: ${service.price}%0A`;
+            }
+            
+            message += "%0AMerci de me contacter pour finaliser la commande.";
+            
+            window.open(`https://wa.me/message/QBYI5DDPLNSSA1?text=${message}`, '_blank');
+        }
+
+        // Ouvrir le menu mobile
+        function openMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Fermer le menu mobile
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Afficher une page d'information
+        function showInfoPage(pageId) {
+            // Masquer toutes les pages d'information
+            document.querySelectorAll('.info-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Afficher la page demandée
+            document.getElementById(pageId).classList.add('active');
+            
+            // Faire défiler jusqu'à la page
+            document.getElementById(pageId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Recherche de produits
+        function searchProducts() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            
+            if (searchTerm.trim() === '') {
+                renderServices();
+                return;
+            }
+            
+            const filteredServices = services.filter(service => 
+                service.name.toLowerCase().includes(searchTerm)
+            );
+            
+            const container = document.getElementById('services-container');
+            container.innerHTML = '';
+            
+            if (filteredServices.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px;">Aucun service trouvé pour votre recherche.</p>';
+                return;
+            }
+            
+            filteredServices.forEach(service => {
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                
+                let priceHtml = '';
+                if (service.options) {
+                    priceHtml = service.options.map(option => 
+                        `<div class="service-price">${option.name} → ${option.price} F</div>`
+                    ).join('');
+                } else {
+                    priceHtml = `<div class="service-price">${service.price}</div>`;
+                }
+                
+                // Générer les étoiles
+                const fullStars = Math.floor(service.rating);
+                const halfStar = service.rating % 1 >= 0.5;
+                const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                
+                let starsHtml = '';
+                for (let i = 0; i < fullStars; i++) {
+                    starsHtml += '<i class="fas fa-star"></i>';
+                }
+                if (halfStar) {
+                    starsHtml += '<i class="fas fa-star-half-alt"></i>';
+                }
+                for (let i = 0; i < emptyStars; i++) {
+                    starsHtml += '<i class="far fa-star"></i>';
+                }
+                
+                card.innerHTML = `
+                    <div class="service-icon">
+                        <div class="service-logo" style="background: ${service.logoBg}; color: ${service.logoColor}">
+                            ${service.logo}
+                        </div>
+                        <i class="${service.icon}"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>${service.name}</h3>
+                        <div class="service-rating">
+                            <div class="service-stars">${starsHtml}</div>
+                            <div class="service-review-count">${service.rating} (${service.reviewCount} avis)</div>
+                        </div>
+                        ${priceHtml}
+                        <div class="service-actions">
+                            <button class="btn btn-add-cart" data-id="${service.id}">
+                                <i class="fas fa-cart-plus"></i> Ajouter au panier
+                            </button>
+                            <button class="btn btn-whatsapp" data-id="${service.id}">
+                                <i class="fab fa-whatsapp"></i> Commander
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            // Réattacher les événements aux boutons
+            document.querySelectorAll('.btn-add-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const serviceId = parseInt(this.getAttribute('data-id'));
+                    addToCart(serviceId);
+                });
+            });
+            
+            document.querySelectorAll('.btn-whatsapp').forEach(button => {
+                button.addEventListener('click', function() {
+                    const serviceId = parseInt(this.getAttribute('data-id'));
+                    orderServiceViaWhatsApp(serviceId);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
